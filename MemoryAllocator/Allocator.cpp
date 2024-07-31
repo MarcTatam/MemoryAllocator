@@ -17,9 +17,20 @@ void* Allocator::allocate(size_t size)
 		curr = curr->next;
 	}
 	curr->next = &MemoryBlock(size);
+	curr = curr->next;
+	return (void*)curr->blockPool;
 }
 
 void Allocator::deallocate(void* ptr)
 {
+	MemoryBlock* curr = head.next;
+	MemoryBlock* prev = &head;
+	size_t dealloicatedSize = 0U;
+	while (!(curr->next == nullptr)) {
+		if ((void*)curr->blockPool == ptr) {
+			prev->next = curr->next;
+			free(curr->blockPool);
+		}
+	}
 	return;
 }
