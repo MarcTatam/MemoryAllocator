@@ -10,5 +10,8 @@ public:
 
 private:
 	MemoryBlock head;
+	size_t free;
+	size_t allocated;
+	unsigned char* pool;
 };
 
