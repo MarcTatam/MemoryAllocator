@@ -1,19 +1,22 @@
 #include "Allocator.h"
-#include <cstdlib>
 #include <stdexcept>
 
 Allocator::Allocator(size_t total_size)
 {
-	memory = malloc(total_size);
-	if (!memory) {
-		throw std::runtime_error("Inital allocation failed");
-	}
-	return;
+	MemoryBlock head = MemoryBlock(total_size);
 }
 
 void* Allocator::allocate(size_t size)
 {
-	return;
+	if (head.allocated < size) {
+		throw std::runtime_error("Out of memory");
+	}
+	head.allocated = head.allocated - size;
+	MemoryBlock* curr = &head;
+	while (!(curr->next == nullptr)) {
+		curr = curr->next;
+	}
+	curr->next = &MemoryBlock(size);
 }
 
 void Allocator::deallocate(void* ptr)

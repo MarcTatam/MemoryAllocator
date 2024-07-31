@@ -2,11 +2,10 @@
 class MemoryBlock
 {
 public:
+	MemoryBlock(size_t size=0);
 	bool allocated;
 	MemoryBlock* next;
-	unsigned char* block_pool;
-	size_t block_size;
-
-	MemoryBlock(size_t size);
+	unsigned char* blockPool;
+	size_t blockSize;
 };
 
