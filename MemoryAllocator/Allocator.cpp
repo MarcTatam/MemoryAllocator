@@ -25,12 +25,14 @@ void Allocator::deallocate(void* ptr)
 {
 	MemoryBlock* curr = head.next;
 	MemoryBlock* prev = &head;
-	size_t dealloicatedSize = 0U;
+	size_t deallocatedSize = 0U;
 	while (!(curr->next == nullptr)) {
 		if ((void*)curr->blockPool == ptr) {
 			prev->next = curr->next;
+			deallocatedSize = curr->blockSize;
 			free(curr->blockPool);
 		}
 	}
+	head.allocated = head.allocated + deallocatedSize;
 	return;
 }
