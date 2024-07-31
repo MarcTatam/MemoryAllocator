@@ -1,9 +1,9 @@
 #include "Allocator.h"
 #include <stdexcept>
 
-Allocator::Allocator(size_t total_size)
+Allocator::Allocator(size_t total_size) : head(total_size)
 {
-	MemoryBlock head = MemoryBlock(total_size);
+	
 }
 
 void* Allocator::allocate(size_t size)
@@ -16,7 +16,8 @@ void* Allocator::allocate(size_t size)
 	while (!(curr->next == nullptr)) {
 		curr = curr->next;
 	}
-	curr->next = &MemoryBlock(size);
+	MemoryBlock* newBlock = new MemoryBlock(size);
+	curr->next = newBlock;
 	curr = curr->next;
 	return (void*)curr->blockPool;
 }
@@ -30,8 +31,10 @@ void Allocator::deallocate(void* ptr)
 		if ((void*)curr->blockPool == ptr) {
 			prev->next = curr->next;
 			deallocatedSize = curr->blockSize;
-			free(curr->blockPool);
+			delete curr;
+			break;
 		}
+		curr = curr->next;
 	}
 	head.allocated = head.allocated + deallocatedSize;
 	return;

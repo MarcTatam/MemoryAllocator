@@ -12,3 +12,6 @@ MemoryBlock::MemoryBlock(size_t size)
 		throw std::runtime_error("Allocation failed");
 	}
 }
+MemoryBlock::~MemoryBlock() {
+	free(blockPool);
+}
